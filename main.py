@@ -23,9 +23,9 @@ def info() -> typing.Dict:
     return {
         "apiversion": "1",
         "author": "",  # TODO: Your Battlesnake Username
-        "color": "#888888",  # TODO: Choose color
-        "head": "default",  # TODO: Choose head
-        "tail": "default",  # TODO: Choose tail
+        "color": "#f92672",  # TODO: Choose color
+        "head": "tongue",  # TODO: Choose head
+        "tail": "round-bum",  # TODO: Choose tail
     }
 
 
@@ -83,38 +83,34 @@ def move(game_state: typing.Dict) -> typing.Dict:
         is_move_safe["down"] = False
         #print("8")
 
-    # TODO: Step 2 - Prevent your Battlesnake from colliding with itself
-  
 
 
-    # TODO: Step 3 - Prevent your Battlesnake from colliding with other Battlesnakes
     opponents = game_state['board']['snakes']
-    
     for op in opponents :
-            if is_move_safe["right"] :
-                for piece in op['body']:
-                    if my_head['x'] == piece['x'] - 1 and my_head['y'] == piece['y']:
-                        is_move_safe['right'] = False
-                        #print('9')
-                        break
-            if is_move_safe["left"] :
-                for piece in op['body']:
-                    if my_head['x'] == piece['x'] + 1 and my_head['y'] == piece['y']:
-                        is_move_safe['left'] = False
-                        #print('10')
-                        break
-            if is_move_safe["up"] :
-                for piece in op['body']:
-                    if my_head['y'] == piece['y'] - 1 and my_head['x'] == piece['x']:
-                        is_move_safe['up'] = False
-                        #print('11')
-                        break
-            if is_move_safe["down"] :
-                for piece in op['body']:
-                    if my_head['y'] == piece['y'] + 1 and my_head['x'] == piece['x']:
-                        is_move_safe['down'] = False
-                        #print("12")
-                        break
+        if is_move_safe["right"] :
+            for piece in op['body']:
+                if my_head['x'] == piece['x'] - 1 and my_head['y'] == piece['y']:
+                    is_move_safe['right'] = False
+                    #print('9')
+                    break
+        if is_move_safe["left"] :
+            for piece in op['body']:
+                if my_head['x'] == piece['x'] + 1 and my_head['y'] == piece['y']:
+                    is_move_safe['left'] = False
+                    #print('10')
+                    break
+        if is_move_safe["up"] :
+            for piece in op['body']:
+                if my_head['y'] == piece['y'] - 1 and my_head['x'] == piece['x']:
+                    is_move_safe['up'] = False
+                    #print('11')
+                    break
+        if is_move_safe["down"] :
+            for piece in op['body']:
+                if my_head['y'] == piece['y'] + 1 and my_head['x'] == piece['x']:
+                    is_move_safe['down'] = False
+                    #print("12")
+                    break
 
 
     # Are there any safe moves left?
