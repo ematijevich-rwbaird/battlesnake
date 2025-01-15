@@ -15,6 +15,7 @@ spec:
       containers: 
       - name: battlesnake-container
         image: acrbattlesnake.azurecr.io/erik_battlesnake:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
 ---
