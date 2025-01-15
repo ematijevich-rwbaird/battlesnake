@@ -12,8 +12,8 @@
 
 import random
 import typing
+import math
 #afsdfsdf
-
 # info is called when you create your Battlesnake on play.battlesnake.com
 # and controls your Battlesnake's appearance
 # TIP: If you open your Battlesnake URL in a browser you should see this data
@@ -44,6 +44,9 @@ def end(game_state: typing.Dict):
 # See https://docs.battlesnake.com/api/example-move for available data
 def move(game_state: typing.Dict) -> typing.Dict:
 
+    f = open("lastmove.txt", "r", encoding='utf-8')
+    last_move = f.readline()
+    f.close()
     is_move_safe = {"up": True, "down": True, "left": True, "right": True}
 
     # We've included code to prevent your Battlesnake from moving backwards
@@ -127,12 +130,50 @@ def move(game_state: typing.Dict) -> typing.Dict:
         return {"move": "down"}
 
     # Choose a random move from the safe ones
-    next_move = random.choice(safe_moves)
-
+    
     # TODO: Step 4 - Move towards food instead of random, to regain health and survive longer
-    # food = game_state['board']['food']
+    foods = game_state['board']['food']
+    
+    next_move = []
+    #find closest food
+    if len(foods) != 0 :
+        best_food = foods[0]
+        best_distance = math.sqrt(pow(my_head['x'] - foods[0]['x'], 2) + pow(my_head['y']  - foods[0]['y'], 2))
+        for food in foods :
+            distance = math.sqrt(pow(my_head['x'] - food['x'], 2) + pow(my_head['y']  - food['y'], 2))
+            if distance < best_distance :
+                best_food = food
+
+        
+        x_distance = abs(my_head['x'] - best_food['x'])
+        y_distance = abs(my_head['y'] - best_food['y'])
+        
+        x_or_y = min(x_distance, y_distance)
+
+        # print("Best food: ",best_food,"x_distance: ",x_distance,", y_distance: ", y_distance)
+        if x_distance == x_or_y :
+            if my_head['y'] - best_food['y'] < 0 and is_move_safe['up']:
+                next_move = 'up'
+            elif my_head['y'] - best_food['y'] > 0 and is_move_safe['down']:
+                next_move = "down"
+        elif y_distance == x_or_y :
+            if my_head['x'] - best_food['x'] > 0  and is_move_safe['left']:
+                next_move = "left"
+            elif my_head['x'] - best_food['x'] < 0 and is_move_safe['right']:
+                next_move = "right"
+        else:
+            if last_move is not None :
+                next_move = last_move
+            
+    
+    if len(next_move) == 0 :
+        next_move = random.choice(safe_moves)
+
 
     #print(f"MOVE {game_state['turn']}: {next_move}")
+    f = open("lastmove.txt", "w", encoding='utf-8')
+    f.write(next_move)
+    f.close()
     return {"move": next_move}
 
 
